@@ -1,34 +1,65 @@
 package be.abis.sandwich.model;
 
 import be.abis.sandwich.enumeration.BreadType;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "SANDWICH_ORDER_DETAILS")
 public class SandwichOrderDetail {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "ID")
+    private int id;
 
-    private Sandwich sandwich;
+    @Column(name = "SANDWICHID")
+    private int sandwichId;
+    @Column(name = "AMOUNT")
     private int amount=1;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "BREADTYPE")
     private BreadType breadType;
+    @Column(name = "VEGETABLES")
     private boolean vegetables;
-    private String comment;
+    @Column(name = "COMMENTS")
+    private String comments;
+    @ManyToOne
+    @JoinColumn(name="PERSONID")
     private Person person;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="ORDERID")
     private SandwichOrder sandwichOrder;
+
+    @Override
+    public String toString() {
+        return "SandwichOrderDetail{" +
+                "id=" + id +
+                ", sandwichId=" + sandwichId +
+                ", amount=" + amount +
+                ", breadType=" + breadType +
+                ", vegetables=" + vegetables +
+                ", comments='" + comments + '\'' +
+                ", person=" + person +
+                ", sandwichOrder=" + sandwichOrder +
+                '}';
+    }
 
     public SandwichOrderDetail(){}
 
-    public SandwichOrderDetail(Sandwich sandwich, int amount, BreadType breadType, boolean vegetables, String comment, Person person) {
-        this.sandwich = sandwich;
+    public SandwichOrderDetail(Sandwich sandwich, int amount, BreadType breadType, boolean vegetables, String comments, Person person) {
+        this.sandwichId = sandwich.getId();
         this.amount = amount;
         this.breadType = breadType;
         this.vegetables = vegetables;
-        this.comment = comment;
+        this.comments = comments;
         this.person = person;
     }
 
-    public Sandwich getSandwich() {
-        return sandwich;
+    public int getSandwichId() {
+        return sandwichId;
     }
 
-    public void setSandwich(Sandwich sandwich) {
-        this.sandwich = sandwich;
+    public void setSandwichId(int sandwichId) {
+        this.sandwichId = sandwichId;
     }
 
     public int getAmount() {
@@ -55,12 +86,12 @@ public class SandwichOrderDetail {
         this.vegetables = vegetables;
     }
 
-    public String getComment() {
-        return comment;
+    public String getComments() {
+        return comments;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
     public Person getPerson() {
