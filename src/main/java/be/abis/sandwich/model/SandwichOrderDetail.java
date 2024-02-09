@@ -1,52 +1,39 @@
 package be.abis.sandwich.model;
 
 import be.abis.sandwich.enumeration.BreadType;
-import jakarta.persistence.*;
 
-@Entity
-@Table(name = "SANDWICH_ORDER_DETAILS")
+
 public class SandwichOrderDetail {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "ID")
     private int id;
 
-    @Column(name = "SANDWICHID")
-    private int sandwichId;
-    @Column(name = "AMOUNT")
-    private int amount=1;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "BREADTYPE")
-    private BreadType breadType;
-    @Column(name = "VEGETABLES")
-    private boolean vegetables;
-    @Column(name = "COMMENTS")
-    private String comments;
-    @ManyToOne
-    @JoinColumn(name="PERSONID")
-    private Person person;
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="ORDERID")
-    private SandwichOrder sandwichOrder;
-
-    @Override
-    public String toString() {
-        return "SandwichOrderDetail{" +
-                "id=" + id +
-                ", sandwichId=" + sandwichId +
-                ", amount=" + amount +
-                ", breadType=" + breadType +
-                ", vegetables=" + vegetables +
-                ", comments='" + comments + '\'' +
-                ", person=" + person +
-                ", sandwichOrder=" + sandwichOrder +
-                '}';
+    public int getId() {
+        return id;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Sandwich getSandwich() {
+        return sandwich;
+    }
+
+    public void setSandwich(Sandwich sandwich) {
+        this.sandwich = sandwich;
+    }
+
+    private Sandwich sandwich;
+    private int amount=1;
+    private BreadType breadType;
+    private boolean vegetables;
+    private String comments;
+    private Person person;
+
 
     public SandwichOrderDetail(){}
 
     public SandwichOrderDetail(Sandwich sandwich, int amount, BreadType breadType, boolean vegetables, String comments, Person person) {
-        this.sandwichId = sandwich.getId();
+        this.sandwich = sandwich;
         this.amount = amount;
         this.breadType = breadType;
         this.vegetables = vegetables;
@@ -54,13 +41,6 @@ public class SandwichOrderDetail {
         this.person = person;
     }
 
-    public int getSandwichId() {
-        return sandwichId;
-    }
-
-    public void setSandwichId(int sandwichId) {
-        this.sandwichId = sandwichId;
-    }
 
     public int getAmount() {
         return amount;
@@ -102,11 +82,17 @@ public class SandwichOrderDetail {
         this.person = person;
     }
 
-    public SandwichOrder getSandwichOrder() {
-        return sandwichOrder;
+    @Override
+    public String toString() {
+        return "SandwichOrderDetail{" +
+                "id=" + id +
+                ", sandwich=" + sandwich +
+                ", amount=" + amount +
+                ", breadType=" + breadType +
+                ", vegetables=" + vegetables +
+                ", comments='" + comments + '\'' +
+                ", person=" + person +
+                '}';
     }
 
-    public void setSandwichOrder(SandwichOrder sandwichOrder) {
-        this.sandwichOrder = sandwichOrder;
-    }
 }

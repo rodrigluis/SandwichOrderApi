@@ -9,17 +9,6 @@ public class Sandwich {
     private String description;
     private String category;
 
-    @Override
-    public String toString() {
-        return "Sandwich{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", category='" + category + '\'' +
-                ", basePrice=" + basePrice +
-                '}';
-    }
-
     private double basePrice;
 
     public Sandwich(){}
@@ -76,5 +65,15 @@ public class Sandwich {
         this.basePrice = basePrice;
     }
 
+    @Override
+    public String toString() {
+        return "Sandwich{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", category='" + category + '\'' +
+                ", basePrice=" + basePrice +
+                '}';
+    }
 
 }

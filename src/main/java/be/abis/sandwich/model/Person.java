@@ -4,16 +4,10 @@ import jakarta.persistence.*;
 
 import java.util.Objects;
 
-@Entity
-@Table(name = "persons")
 public class Person {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "ID")
+
     private int id;
-    @Column(name = "FIRSTNAME")
     private String firstName;
-    @Column(name = "LASTNAME")
     private String lastName;
 
     public Person(){
@@ -25,10 +19,17 @@ public class Person {
         this.lastName = lastName;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getFirstName() {
         return firstName;
     }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -36,7 +37,6 @@ public class Person {
     public String getLastName() {
         return lastName;
     }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -44,7 +44,8 @@ public class Person {
     @Override
     public String toString() {
         return "Person{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 '}';
     }

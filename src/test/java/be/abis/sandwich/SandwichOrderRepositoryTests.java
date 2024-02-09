@@ -1,10 +1,7 @@
 package be.abis.sandwich;
 
 import be.abis.sandwich.enumeration.BreadType;
-import be.abis.sandwich.model.Course;
-import be.abis.sandwich.model.Person;
-import be.abis.sandwich.model.SandwichOrder;
-import be.abis.sandwich.model.SandwichOrderDetail;
+import be.abis.sandwich.model.*;
 import be.abis.sandwich.repository.CourseRepository;
 import be.abis.sandwich.repository.PersonRepository;
 import be.abis.sandwich.repository.SandwichOrderRepository;
@@ -21,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class SandwichOrderTests {
+class SandwichOrderRepositoryTests {
     @Autowired
     SandwichOrderRepository sandwichOrderRepository;
     @Autowired
@@ -41,10 +38,11 @@ class SandwichOrderTests {
         sandwichOrder.setCourse(course);
 
         SandwichOrderDetail sandwichOrderDetail = new SandwichOrderDetail();
-        sandwichOrderDetail.setSandwichOrder(sandwichOrder);
         sandwichOrderDetail.setBreadType(BreadType.BROWN);
         sandwichOrderDetail.setComments("I like it");
-        sandwichOrderDetail.setSandwichId(1);
+        Sandwich sandwich = new Sandwich();
+        sandwich.setId(1);
+        sandwichOrderDetail.setSandwich(sandwich);
         Person person = personRepository.findPersonByName("Dirk","Lamote");
         sandwichOrderDetail.setPerson(person);
 

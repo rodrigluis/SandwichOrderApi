@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public interface SandwichOrderService {
     SandwichOrder createSandwichOrder(SandwichOrder sandwichOrder);
-    void printSandwichOrder(SandwichOrder so) throws IOException;
+    void printSandwichOrder(SandwichOrder so);
     double calculateSandwichOrderPrice(SandwichOrder so);
 
     SandwichOrder findSandwichOrder(int id);

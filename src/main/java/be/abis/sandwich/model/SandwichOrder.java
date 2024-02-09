@@ -7,29 +7,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-@Entity
-@Table(name = "SANDWICH_ORDERS")
 public class SandwichOrder {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "ID")
     private int id;
-    @Column(name = "ORDERDATE")
     private LocalDate orderDate;
 
-    @Override
-    public String toString() {
-        return "SandwichOrder{" +
-                "id=" + id +
-                ", orderDate=" + orderDate +
-                ", course=" + course +
-                ", totalCost=" + totalCost +
-                ", sandwichOrderDetails=" + sandwichOrderDetails +
-                '}';
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "COURSEID")
     private Course course;
 
     public BigDecimal getTotalCost() {
@@ -40,7 +21,6 @@ public class SandwichOrder {
         this.totalCost = totalCost;
     }
 
-    @Column(name = "TOTALCOST")
     private BigDecimal totalCost;
 
     public int getId() {
@@ -51,15 +31,6 @@ public class SandwichOrder {
         this.id = id;
     }
 
-    public Collection<SandwichOrderDetail> getSandwichOrderDetails() {
-        return sandwichOrderDetails;
-    }
-
-    public void setSandwichOrderDetails(Collection<SandwichOrderDetail> sandwichOrderDetails) {
-        this.sandwichOrderDetails = sandwichOrderDetails;
-    }
-
-    @OneToMany(mappedBy = "sandwichOrder", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     private Collection<SandwichOrderDetail> sandwichOrderDetails = new ArrayList<>();
 
     public SandwichOrder(){
@@ -86,5 +57,25 @@ public class SandwichOrder {
     public void setCourse(Course course) {
         this.course = course;
     }
+
+    public Collection<SandwichOrderDetail> getSandwichOrderDetails() {
+        return sandwichOrderDetails;
+    }
+
+    public void setSandwichOrderDetails(Collection<SandwichOrderDetail> sandwichOrderDetails) {
+        this.sandwichOrderDetails = sandwichOrderDetails;
+    }
+
+    @Override
+    public String toString() {
+        return "SandwichOrder{" +
+                "id=" + id +
+                ", orderDate=" + orderDate +
+                ", course=" + course +
+                ", totalCost=" + totalCost +
+                ", sandwichOrderDetails=" + sandwichOrderDetails +
+                '}';
+    }
+
 
 }

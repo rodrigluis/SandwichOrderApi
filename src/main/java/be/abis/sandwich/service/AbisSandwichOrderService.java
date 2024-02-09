@@ -5,10 +5,13 @@ import be.abis.sandwich.model.Sandwich;
 import be.abis.sandwich.model.SandwichOrder;
 import be.abis.sandwich.model.SandwichOrderDetail;
 import be.abis.sandwich.repository.SandwichOrderRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -40,6 +43,17 @@ public class AbisSandwichOrderService implements SandwichOrderService {
 
     @Override
     public void printSandwichOrder(SandwichOrder so) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        try {
+            objectMapper.writeValue(new File("C:\\temp\\SandwichOrder_" + so.getId()), so);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        /*
         String fileName = "C:\\temp\\SandwichOrder_" + so.getId();
         BufferedWriter writer = null;
         try {
@@ -55,17 +69,16 @@ public class AbisSandwichOrderService implements SandwichOrderService {
                 e.printStackTrace();
             }
         }
-
+*/
     }
 
     @Override
     public double calculateSandwichOrderPrice(SandwichOrder so) {
-        double sandwichOrderPrice = 0;
         Sandwich sandwich = null;
         double orderPrice = 0;
 
         for (SandwichOrderDetail detail:so.getSandwichOrderDetails()) {
-            sandwich = sandwichService.findSandwichById(detail.getSandwichId());
+            sandwich = sandwichService.findSandwichById(detail.getSandwich().getId());
             orderPrice = orderPrice + sandwich.getBasePrice() * detail.getAmount();
             if (BreadType.BROWN.equals(detail.getBreadType())) {
                 orderPrice = orderPrice + PRICE_BROWN_SUPPLEMENT * detail.getAmount();
@@ -78,12 +91,18 @@ public class AbisSandwichOrderService implements SandwichOrderService {
         so.setTotalCost(BigDecimal.valueOf(orderPrice));
         sandwichOrderRepository.updateSandwichOrder(so);
 
-        return sandwichOrderPrice;
+        return orderPrice;
 
     }
 
     @Override
     public SandwichOrder findSandwichOrder(int id) {
-       return sandwichOrderRepository.findSandwichOrderById(id);
+       SandwichOrder sandwichOrder = sandwichOrderRepository.findSandwichOrderById(id);
+       Sandwich sandwich = null;
+       for (SandwichOrderDetail sandwichOrderDetail : sandwichOrder.getSandwichOrderDetails()) {
+           sandwich = sandwichService.findSandwichById(sandwichOrderDetail.getSandwich().getId());
+           sandwichOrderDetail.setSandwich(sandwich);
+       }
+       return sandwichOrder;
     }
 }
